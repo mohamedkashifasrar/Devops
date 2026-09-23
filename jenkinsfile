@@ -1,28 +1,28 @@
 pipeline {
-  agent any
+    agent any
 
-  tools {
-    nodejs 'frontend'
-  }
+    tools {
+        nodejs 'frontend'
+    }
 
-  stages {
-    stage('Checkout') {
-      steps { 
-         git branch: 'main',
-         credentialsId: 'git-creds',
-         url: 'https://github.com/mohamedkashifasrar/Devops.git'
-      }
-   }
-
-    stage('Install') {
-        steps {
-           sh 'npm install'
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                credentialsId: 'git-creds',
+                url: 'https://github.com/mohamedkashifasrar/Devops.git'
+            }
         }
-   }
-#    stage('build') {
- #       steps {
-  #          sh 'npm run build'
-   #   }  
-   # }
-  }
+
+        stage('Install') {
+            steps {
+                sh 'npm install'
+            }
+       }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+    }
 }
