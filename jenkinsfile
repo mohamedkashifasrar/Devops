@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   tools {
-    node js 'frontend'
+    nodejs 'frontend'
   }
 
   stages {
