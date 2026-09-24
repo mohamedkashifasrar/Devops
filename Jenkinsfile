@@ -49,7 +49,11 @@ pipeline {
         
         stage('Build') {
             steps {
-                sh 'npm run build'
+                dir('frontend') {
+                    sh ''' 
+                        /usr/bin/npm run build
+                    '''
+                }
             }
         }
     }
