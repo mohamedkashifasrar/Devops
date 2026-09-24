@@ -7,16 +7,18 @@ pipeline {
 
     stages {
         stage('Checkout') {
-          steps {
-              git branch: 'main',
-                  credentialsId: 'Frontend',
-                  url: 'https://github.com/mohamedkashifasrar/Devops.git'
+            steps {
+                git branch: 'main',
+                    credentialsId: 'Frontend',
+                    url: 'https://github.com/mohamedkashifasrar/Devops.git'
             }
         }
 
         stage('Install') {
-          steps {
-            sh 'nppm install'
+            steps {
+                sh 'node --version'
+                sh 'npm --version'
+                sh 'npm install'
             }
         }
     }
