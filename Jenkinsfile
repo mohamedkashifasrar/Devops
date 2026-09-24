@@ -56,5 +56,25 @@ pipeline {
                 }
             }
         }
+
+        stage('Sonarqube Analysis') {
+            steps {
+                script {
+                    def scannerHome = tool name: 'SonarQube', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                
+             withSonarQubeEnv('SonarQube') {   
+                withCredentials([string(credentialsId: 'Devops-token', variable: 'SONAR_TOKEN')]) {
+                    sh """
+                            ${scannerhome}/bin/sonar-scanner \
+                            -Dsonar.projectKey=frontend \
+                            -Dsonar.sources=frontend\
+                            -Dsonar.host.url=http://localhost:9000 \
+                            -Dsonar.login=${SONAR_TOKEN}
+                            """
+                        }
+                    }
+                } 
+            }
+        }
     }
 }
