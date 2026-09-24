@@ -16,7 +16,7 @@ pipeline {
 
         stage('Install') {
           steps {
-            sh 'nodejs install'
+            sh 'nppm install'
             }
         }
     }
