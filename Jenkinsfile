@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+
+    tools {
+      nodejs 'Frontend'
+    }
+
+    stages {
+        stage('Checkout') {
+          steps {
+              git branch: 'main',
+                  credentialsId: 'Frontend',
+                  url: 'https://github.com/mohamedkashifasrar/Devops.git'
+            }
+        }
+
+        stage('Install') {
+          steps {
+            sh 'nodejs install'
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+         
