@@ -16,27 +16,34 @@ pipeline {
                 sh '''
                     echo "===== JENKINS ENVIRONMENT ====="
                     whoami
-                    echo "PATH=$PATH"
+                    pwd
 
                     echo "===== NODE ====="
                     /usr/bin/node --version
 
                     echo "===== NPM ====="
                     /usr/bin/npm --version
-
-                    echo "===== WHICH ====="
-                    command -v node || true
-                    command -v npm || true
                 '''
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh '''
-                    echo "===== NPM INSTALL ====="
-                    /usr/bin/npm install
-                '''
+                dir('frontend') {
+                    sh '''
+                        echo "===== FRONTEND DIRECTORY ====="
+                        pwd
+
+                        echo "===== FILES ====="
+                        ls -la
+
+                        echo "===== PACKAGE.JSON ====="
+                        ls -l package.json
+
+                        echo "===== NPM INSTALL ====="
+                        /usr/bin/npm install
+                    '''
+                }
             }
         }
     }
