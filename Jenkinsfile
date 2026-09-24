@@ -1,11 +1,8 @@
 pipeline {
     agent any
 
-    environment {
-        PATH = "/usr/bin:/usr/local/bin:/bin:${env.PATH}"
-    }
-
     stages {
+
         stage('Checkout') {
             steps {
                 git branch: 'main',
@@ -14,31 +11,33 @@ pipeline {
             }
         }
 
-        stage('Install') {
+        stage('Node and NPM Test') {
             steps {
                 sh '''
-                    echo "===== Node.js verification ====="
+                    echo "===== JENKINS ENVIRONMENT ====="
                     whoami
                     echo "PATH=$PATH"
-                    which node
-                    which npm
-                    node --version
-                    npm --version
 
-                    echo "===== Installing dependencies ====="
-                    npm install
+                    echo "===== NODE ====="
+                    /usr/bin/node --version
+
+                    echo "===== NPM ====="
+                    /usr/bin/npm --version
+
+                    echo "===== WHICH ====="
+                    command -v node || true
+                    command -v npm || true
+                '''
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh '''
+                    echo "===== NPM INSTALL ====="
+                    /usr/bin/npm install
                 '''
             }
         }
     }
 }
-
-
-
-
-
-
-
-
-
-         
