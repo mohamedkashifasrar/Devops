@@ -9,6 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
+                credentialsId: 'Frontend',
                 url: 'https://github.com/mohamedkashifasrar/Devops.git'
             }
         }
