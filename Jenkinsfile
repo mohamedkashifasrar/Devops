@@ -1,8 +1,8 @@
 pipeline {
     agent any
 
-    tools {
-      nodejs 'Frontend'
+    environment {
+        PATH = "/usr/bin:/usr/local/bin:/bin:${env.PATH}"
     }
 
     stages {
@@ -16,14 +16,22 @@ pipeline {
 
         stage('Install') {
             steps {
-                sh 'node --version'
-                sh 'npm --version'
-                sh 'npm install'
+                sh '''
+                    echo "===== Node.js verification ====="
+                    whoami
+                    echo "PATH=$PATH"
+                    which node
+                    which npm
+                    node --version
+                    npm --version
+
+                    echo "===== Installing dependencies ====="
+                    npm install
+                '''
             }
         }
     }
 }
-
 
 
 
