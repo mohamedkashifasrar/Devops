@@ -13,16 +13,5 @@ pipeline {
                     url: 'https://github.com/mohamedkashifasrar/Devops.git'
             }
         }
-
-        stage('Install') {
-            steps {
-                sh 'npm install'
-            }
-       }
-        stage('Build') {
-            steps {
-                sh 'npm run build'
-            }
-        }
     }
 }
