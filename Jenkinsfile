@@ -90,14 +90,17 @@ pipeline {
 
         stage('Deploy S3 Bucket'){
             steps{
-                echo 'updating S3 Bucket'
-                sh ''' 
-                aws s3 sync frontend/dist/ \
-                s3://${S3_BUCKET}/ \
-                --delete \
-                --region ap-south-1
-                '''
-                echo 'Frontend Uploaded Successfully'
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-id']]) {
+                        echo 'updating S3 Bucket'
+                        sh ''' 
+                        aws s3 sync frontend/dist/ \
+                        s3://${S3_BUCKET}/ \
+                        --delete \
+                        --region ap-south-1
+                        '''
+                        echo 'Frontend Uploaded Successfully'
+                    }
             }      
         }
         stage('Cloudfront Deployment'){
