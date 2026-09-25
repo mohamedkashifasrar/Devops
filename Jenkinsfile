@@ -105,12 +105,15 @@ pipeline {
         }
         stage('Cloudfront Deployment'){
             steps{
-                echo 'Deploying...'
-                sh ''' 
-                  aws cloudfront create-invalidation \
-                  --distribution-id ${CLOUDFRONT_DIST_ID} \
-                  --paths "/*"
-                  '''
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-id']]) {
+                        echo 'Deploying...'
+                        sh ''' 
+                        aws cloudfront create-invalidation \
+                        --distribution-id ${CLOUDFRONT_DIST_ID} \
+                        --paths "/*"
+                        '''
+                }
   
             }
         }
