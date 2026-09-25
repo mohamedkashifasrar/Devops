@@ -1,6 +1,10 @@
 pipeline {
     agent any
    
+    tools {
+        nodejs 'Frontend'
+    }
+   
      environment {
         AWS_DEFAULT_REGION = 'ap-south-1'
         S3_BUCKET = 'devops-flo'
