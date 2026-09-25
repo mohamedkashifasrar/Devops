@@ -1,5 +1,12 @@
 pipeline {
     agent any
+   
+     environment {
+        AWS_DEFAULT_REGION = 'ap-south-01'
+        S3_BUCKET = 'devops-flo'
+        CLOUDFRONT_DIST_ID= 'EKOA6Y638AYIJV'
+        AWS_CREDENTIALS= credentials('aws-id')
+        }
 
     stages {
 
@@ -74,6 +81,30 @@ pipeline {
                         }
                     }
                 } 
+            }
+        }
+
+        stage('Deploy S3 Bucket'){
+            steps{
+                echo 'updating S3 Bucket'
+                sh ''' 
+                aws s3 sync frontend/dist/ \
+                s3://${S3_BUCKET}/ \
+                --delete \
+                --region ap-south-01
+                '''
+                echo 'Frontend Uploaded Successfully'
+            }      
+        }
+        stage('Cloudfront Deployment'){
+            steps{
+                echo 'Deploying...'
+                sh ''' 
+                  aws cloudfront create-invalidation \
+                  --distribution-id ${CLOUDFRONT_DIST_ID} \
+                  --paths "/*"
+                  '''
+  
             }
         }
     }
