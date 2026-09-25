@@ -113,7 +113,7 @@ pipeline {
                         --distribution-id ${CLOUDFRONT_DIST_ID} \
                         --paths "/*"
                         '''
-                }
+                    }
   
             }
         }
