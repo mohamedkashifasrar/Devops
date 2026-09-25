@@ -2,7 +2,7 @@ pipeline {
     agent any
    
      environment {
-        AWS_DEFAULT_REGION = 'ap-south-01'
+        AWS_DEFAULT_REGION = 'ap-south-1'
         S3_BUCKET = 'devops-flo'
         CLOUDFRONT_DIST_ID= 'EKOA6Y638AYIJV'
         AWS_CREDENTIALS= credentials('aws-id')
@@ -91,7 +91,7 @@ pipeline {
                 aws s3 sync frontend/dist/ \
                 s3://${S3_BUCKET}/ \
                 --delete \
-                --region ap-south-01
+                --region ap-south-1
                 '''
                 echo 'Frontend Uploaded Successfully'
             }      
