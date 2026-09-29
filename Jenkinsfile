@@ -88,34 +88,44 @@ pipeline {
             }
         }
 
-        stage('Deploy S3 Bucket'){
-            steps{
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'aws-id']]) {
-                        echo 'updating S3 Bucket'
-                        sh ''' 
-                        aws s3 sync frontend/dist/ \
-                        s3://${S3_BUCKET}/ \
-                        --delete \
-                        --region ap-south-1
-                        '''
-                        echo 'Frontend Uploaded Successfully'
-                    }
-            }      
-        }
-        stage('Cloudfront Deployment'){
-            steps{
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'aws-id']]) {
-                        echo 'Deploying...'
-                        sh ''' 
-                        aws cloudfront create-invalidation \
-                        --distribution-id ${CLOUDFRONT_DIST_ID} \
-                        --paths "/*"
-                        '''
-                    }
-  
+        stage('S3 Deployment') {
+          steps {
+            dir('frontend') {
+              withCredentials([[
+                $class: 'AmazonWebServicesCredentialsBinding',
+                credentialsId: 'AWS_CREDENTIALS',
+                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+            ]]) {
+                withEnv(['AWS_DEFAULT_REGION=ap-south-1']) {
+                    sh '''
+                        aws sts get-caller-identity
+
+                        aws s3 sync dist/ s3://devops-flo/
+                    '''
+                }
+              }
             }
+          }
+        }
+
+        stage('CloudFront Deployment') {
+          steps {
+            withCredentials([[
+              $class: 'AmazonWebServicesCredentialsBinding',
+              credentialsId: 'AWS_CREDENTIALS',
+              accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+              secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+          ]]) {
+              withEnv(['AWS_DEFAULT_REGION=ap-south-1']) {
+                  sh '''
+                      aws cloudfront create-invalidation \
+                      --distribution-id EKOA6Y638AYIJV \
+                      --paths "/*"
+                  '''
+              }
+            }
+          }
         }
     }
 }
