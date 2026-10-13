@@ -74,7 +74,7 @@ pipeline {
                     def scannerHome = tool name: 'SonarQube', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                 
              withSonarQubeEnv('SonarQube') {   
-                withCredentials([string(credentialsId: 'Devops-token', variable: 'SONAR_TOKEN')]) {
+                withCredentials([string(credentialsId: 'Devops', variable: 'SONAR_TOKEN')]) {
                     sh """
                             ${scannerHome}/bin/sonar-scanner \
                             -Dsonar.projectKey=Devops \
